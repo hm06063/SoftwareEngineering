@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width", initial-scale=1">
+    <title>Recipe view</title>
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="./view_style.css">
+	
+	<audio id='audio_play' src='./sound.mp3'></audio> 
+</head>
+
+<body>
+
+<div class="container">
+
+	<div align = "left">
+		<button type="button" class="btn" onclick="favorites();">즐겨찾기 등록</button>
+	</div>
+	
+    <div class="row">
+		<h1 class="text-center"><?php echo $item_title;?></h1>
+        <p class="text-center"></p>
+    </div>
+
+    <div id="quicknav">
+        <ul>
+			<?php
+			for($step_count=1; $step_count <= $count; $step_count++){?>
+				<li><a href="#<?php echo $step_count;?>" class="btn btn-primary">step <?php echo $step_count;?> </a></li>
+			
+			<?php } ?>
+        </ul>
+    </div>
+	<br><br>
+
+	<div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-default coupon">
+              <div class="panel-heading" id="head">
+                <div class="panel-title" id="title">
+                    <span class="hidden-xs"><?php echo $item_title;?></span>
+                    <span class="visible-xs"><?php echo $item_title;?></span>
+                </div>
+              </div>
+              <div class="panel-body">
+				<div class="col-md-9">
+                    <ul class="items">
+						<li>가격 : <?php echo $item_price; ?> </li>
+                        <li>재료 : <?php echo $item_ingredients; ?></li>	
+                    </ul>
+                </div>
+
+                <div class="col-md-12">
+                    <p class="disclosure">부가설명 : <?php echo $item_content; ?></p>
+                </div>
+              </div>
+              <div class="panel-footer">
+                <div class="coupon-code">
+                    작성일 : <?php echo $item_date ;?>
+                </div>
+                <div>
+			작성자 : <?php echo $item_nick; ?>
+		</div>
+						
+              </div>
+			  
+            </div>
+    	</div>
+    </div>
+
+	<?php
+	
+	for($start_count=1; $start_count<=$count; $start_count++){
+		$word="step";
+		$now_step=$word.$start_count;
+	?>
+	
+	<div class="row" id="<?php echo $start_count; ?>">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-default coupon">
+              <div class="panel-heading" id="head">
+                <div class="panel-title" id="title" >
+                    <span class="hidden-xs">step <?php echo $start_count; ?></span>
+                    <span class="visible-xs">step <?php echo $start_count; ?></span>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="col-md-9">
+                    <ul class="items">
+                        <li><?php echo $row_step[$now_step];?></li>
+                    </ul>
+                </div>
+				
+				<?php if(empty($row_time[$now_step])==false){?>
+				<div align="center">
+				<span id=<?php echo $now_step?>>
+				<h1><b> <?php echo floor($row_time[$now_step]/60)?>분&nbsp<?php echo ($row_time[$now_step]%60)?>초</b></h1> 
+				</span>
+				<br>
+				<div class="wrap"><button class="button" onclick="timer(<?php echo $row_time[$now_step]?>, <?php echo "'".$now_step."'"?>)">시작</button></div>
+				<br><br>		
+				</div>
+				<?php } ?>
+				
+              </div>
+			  
+            </div>
+    	</div>
+    </div>  
+
+	<?php } ?>
+
+</div>
+
+	
+	<div align="center">
+		<p id="star_grade">
+			 별점을 입력해주세요! : 
+			<a href="#">★</a>
+			<a href="#">★</a>
+			<a href="#">★</a>
+			<a href="#">★</a>
+			<a href="#">★</a>
+		</p>
+	</div>	
+	
+	<?php include './view_java.js';?>
+	<div class="container">
+<div class = "low-button">
+
+   <div align="center">
+
+     <button type="button" onclick="location.href='../index.php'" class="btn btn-outline-primary btn-lg">메인으로</button>
+ 
+ </div>
+ </div>
+</div>
+</body>
+
+</html>
