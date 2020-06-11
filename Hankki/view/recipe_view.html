@@ -18,10 +18,14 @@
 <body>
 
 <div class="container">
-
+	<?php
+	session_start();
+	if(isset($_SESSION["ID"])){
+	?>
 	<div align = "left">
 		<button type="button" class="btn" onclick="favorites();">즐겨찾기 등록</button>
 	</div>
+	<?php } ?>
 	
     <div class="row">
 		<h1 class="text-center"><?php echo $item_title;?></h1>
@@ -118,7 +122,9 @@
 
 </div>
 
-	
+	<?php
+	if(isset($_SESSION["ID"])){
+	?>
 	<div align="center">
 		<p id="star_grade">
 			 별점을 입력해주세요! : 
@@ -129,6 +135,7 @@
 			<a href="#">★</a>
 		</p>
 	</div>	
+	<?php } ?>
 	
 	<?php include './view_java.js';?>
 	<div class="container">
