@@ -15,23 +15,23 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width", initial-scale=1">
 		
-		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <!-- Css Styles -->
-   <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="../css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="../css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="../css/flaticon.css" type="text/css">
-    <link rel="stylesheet" href="../css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="../css/barfiller.css" type="text/css">
-    <link rel="stylesheet" href="../css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="../css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="../css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="../css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="../css/style.css" type="text/css">
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+   	 <!-- Css Styles -->
+   	<link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
+   	<link rel="stylesheet" href="../css/font-awesome.min.css" type="text/css">
+    	<link rel="stylesheet" href="../css/elegant-icons.css" type="text/css">
+    	<link rel="stylesheet" href="../css/flaticon.css" type="text/css">
+    	<link rel="stylesheet" href="../css/nice-select.css" type="text/css">
+  	<link rel="stylesheet" href="../css/barfiller.css" type="text/css">
+ 	<link rel="stylesheet" href="../css/magnific-popup.css" type="text/css">
+ 	<link rel="stylesheet" href="../css/jquery-ui.min.css" type="text/css">
+	<link rel="stylesheet" href="../css/owl.carousel.min.css" type="text/css">
+ 	<link rel="stylesheet" href="../css/slicknav.min.css" type="text/css">
+ 	<link rel="stylesheet" href="../css/style.css" type="text/css">
            
-		<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
     </head>
 	
@@ -82,7 +82,6 @@
 					</tbody>
 				</table>
 					
-					
 			</div>
 		</div>
 		
@@ -96,15 +95,15 @@
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="../js/jquery-3.3.1.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/jquery.nice-select.min.js"></script>
-    <script src="../js/jquery-ui.min.js"></script>
-    <script src="../js/jquery.nicescroll.min.js"></script>
-    <script src="../js/jquery.barfiller.js"></script>
-    <script src="../js/jquery.magnific-popup.min.js"></script>
-    <script src="../js/jquery.slicknav.js"></script>
-    <script src="../js/owl.carousel.min.js"></script>
-    <script src="../js/main.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+  	<script src="../js/jquery.nice-select.min.js"></script>
+   	<script src="../js/jquery-ui.min.js"></script>
+  	<script src="../js/jquery.nicescroll.min.js"></script>
+  	<script src="../js/jquery.barfiller.js"></script>
+ 	<script src="../js/jquery.magnific-popup.min.js"></script>
+	<script src="../js/jquery.slicknav.js"></script>
+   	<script src="../js/owl.carousel.min.js"></script>
+   	<script src="../js/main.js"></script>
 
 	</body>
 </html>
