@@ -14,7 +14,7 @@ if($link === false){
 	$count=$row['cookTime'];
 
 	$item_nick = $row['nickname'];
-  $item_id = $row['userID'];
+  	$item_id = $row['userID'];
 
 	$item_title = str_replace(" ", "&nbsp;", $row['title']);
 
@@ -67,16 +67,17 @@ if($link === false){
 
 <head>
     <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Recipe view</title>
-	 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
-    	 <link href="../css/view.css" rel="stylesheet">
-	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/view.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
 
-	<audio id='audio_play' src='./sound.mp3'></audio>
+    <audio id='audio_play' src='./sound.mp3'></audio>
+	
 	<style>
 		.starR{
 		  background: url('http://miuu227.godohosting.com/images/icon/ico_review.png') no-repeat right 0;
@@ -112,127 +113,121 @@ if($link === false){
 <div class="container">
 	<div class="col-md-6 col-md-offset-3" >
         <div align = "left">
-			<button type="button" class="btn" onclick="delfavor();">즐겨찾기 해제</button>
-		</div>
+		<button type="button" class="btn" onclick="delfavor();">즐겨찾기 해제</button>
+	</div>
 			
-		<div class="row">
-			<h1 class="text-center"><?php echo $item_title?></h1>
-			<p class="text-center"></p>
-		</div>
-    </div>
-	</br>
+	<div class="row">
+		<h1 class="text-center"><?php echo $item_title?></h1>
+		<p class="text-center"></p>
+	</div>
+</div>
+
+</br>
 
 
 
-    <div id="quicknav">
-        <ul>
+<div id="quicknav">
+	<ul>
 			<?php
 			for($step_count=1; $step_count <= $count; $step_count++){?>
 				<li><a href="#<?php echo $step_count?>" class="btn btn-primary">step <?php echo $step_count?> </a></li>
 
 			<?php } ?>
-        </ul>
-    </div>
-	<br><br>
+	</ul>
+</div>
 
-	<div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-default coupon">
-              <div class="panel-heading" id="head">
-			  
-                <div class="panel-title" id="title">
-					
-                    <span class="hidden-xs"><?php echo $item_title?></span>
-                    <span class="visible-xs"><?php echo $item_title?></span>
+<br><br>
+
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+        	<div class="panel panel-default coupon">
+              	<div class="panel-heading" id="head">	  
+			<div class="panel-title" id="title">
+			    <span class="hidden-xs"><?php echo $item_title?></span>
+			    <span class="visible-xs"><?php echo $item_title?></span>
+			</div>
                 </div>
-              </div>
-              <div class="panel-body">
+                <div class="panel-body">
 				<?php echo "<img src='$item_image' class='coupon-img img-rounded'>";?>
 				<div class="col-md-9">
-                    <ul class="items">
-						<li>가격 : <?php
+					<ul class="items">
+						<li>가격 : 
+						<?php
 						if ($item_price==5000){ echo '만원 미만';}
 						else if ($item_price ==15000) {echo '만원~ 2만원';}
 						else if ($item_price == 25000) {echo '2만원 ~ 3만원';}
 						else if ($item_price == 50000) {echo '3만원 이상';}
-						?> </li>
-                        <li>재료 : <?php echo $item_ingredients ?></li>
-                    </ul>
-                </div>
+						?> 
+						</li>
+						<li>재료 : <?php echo $item_ingredients ?></li>
+					</ul>
+              		  	</div>
 
-                <div class="col-md-12">
-                    <p class="disclosure">부가설명 : <?php echo $item_content ?></p>
-                </div>
+				<div class="col-md-12">
+				    <p class="disclosure">부가설명 : <?php echo $item_content ?></p>
+				</div>
               </div>
+			
               <div class="panel-footer">
-                <div class="coupon-code">
-                    작성일 : <?php echo $item_date?>
-                </div>
-                <div>
-			작성자 : <?php echo $item_nick?>
-		</div>
-		
-		  
-	<?php
-		if(isset($_SESSION["ID"])){
-	?>
-		<!--<div align = "right">
-			<p id="star_grade">
-				 별점 입력하기 :
-				<a href="#">★</a>
-				<a href="#">★</a>
-				<a href="#">★</a>
-				<a href="#">★</a>
-				<a href="#">★</a>
-			</p>
-		</div>-->
-		
-		<div class="starRev" align ="right">
-		  <span class="starR on"></span>
-		  <span class="starR"></span>
-		  <span class="starR"></span>
-		  <span class="starR"></span>
-		  <span class="starR"></span>
-		  
-		</div>
-		<?php
-		}
-	?>
+			<div class="coupon-code">
+			    작성일 : <?php echo $item_date?>
+			</div>
+		      
+			<div>
+				작성자 : <?php echo $item_nick?>
+			</div>	
 
+			<?php
+				if(isset($_SESSION["ID"])){ /* 로그인 한 경우만 별점 입력 */
+			?>
+
+			<div class="starRev" align ="right"> /* 별점 */
+			  <span class="starR on"></span>
+			  <span class="starR"></span>
+			  <span class="starR"></span>
+			  <span class="starR"></span>
+			  <span class="starR"></span>
+
+			</div>
+			<?php
+			}
+			?>
               </div>
 
-            </div>
+             </div>
     	</div>
-    </div>
+</div>
 
-	<?php
+<?php
 
-	for($start_count=1; $start_count<=$count; $start_count++){
-		$word="step";
-		$now_step=$word.$start_count;
-	?>
+for($start_count=1; $start_count<=$count; $start_count++){
+	$word="step";
+	$now_step=$word.$start_count;
+?>
 
 	<div class="row" id="<?php echo $start_count?>">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-default coupon">
-              <div class="panel-heading" id="head">
-                <div class="panel-title" id="title" >
-                    <span class="hidden-xs">step <?php echo $start_count?></span>
-                    <span class="visible-xs">step <?php echo $start_count?></span>
-                </div>
-              </div>
-              <div class="panel-body">
-                <div class="col-md-9">
-                    <ul class="items">
-                        <li><?php echo $$now_step ?></li>
-                    </ul>
-                </div>
-              </div>
+        	<div class="col-md-6 col-md-offset-3">
+           		<div class="panel panel-default coupon">
+				<div class="panel-heading" id="head">
+					<div class="panel-title" id="title" >
+					    <span class="hidden-xs">step <?php echo $start_count?></span>
+					    <span class="visible-xs">step <?php echo $start_count?></span>
+					</div>
+				</div>
+				
+             			<div class="panel-body">
+               				<div class="col-md-9">
+					    <ul class="items">
+						<li><?php echo $$now_step ?></li>
+					    </ul>
+               				</div>
+             			</div>
 
-            </div>
-    	</div>
-    </div>
-	<?php } ?>
+            		</div>
+    		</div>
+   	</div>
+	
+<?php } ?>
 
 </div>
 
@@ -243,20 +238,16 @@ if($link === false){
 		<br>
 		<div class="wrap"><button class="button" onclick="timer();">시작</button></div>
 		<br><br>
-
-
 	</div>
 
 <?php
-		$sql3 = "select cookTime from whalsrl5650.Recipe where recipeid=$id;";
+	$sql3 = "select cookTime from whalsrl5650.Recipe where recipeid=$id;";
 
-		$result3 = mysqli_query($link, $sql3);          
+	$result3 = mysqli_query($link, $sql3);          
 
-		$row3=mysqli_fetch_assoc($result3);
-		$count=$row3['cookTime'];
-		echo "<script>var count = '".$count."';</script>";
-
-
+	$row3=mysqli_fetch_assoc($result3);
+	$count=$row3['cookTime'];
+	echo "<script>var count = '".$count."';</script>";
 ?>
 
 <script type="text/javascript">
@@ -307,22 +298,7 @@ if($link === false){
 	}
 	
 	
-	//$('#star_grade a').click(function(){
-		//$(this).parent().children("a").removeClass("on");  /* 별점의 on 클래스 전부 제거 */
-		//$(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
-		/*var idx = $('#star_grade a').index(this)+1;
-		
-		$.ajax({
-			url:"reviewed.php",
-			type:"GET",
-			data:{'idx':idx,'id':<?php echo $id?>},
-			dataType:"json",
-		});
-
-		return false;
-	});*/
-	
-	$('.starRev span').click(function(){
+	$('.starRev span').click(function(){ /* 별 클릭시 값을 읽어와 별점을 입력하는 기능 */
 	  $(this).parent().children('span').removeClass('on');
 	  $(this).addClass('on').prevAll('span').addClass('on');
 	  var idx = $(this).index+1;
@@ -336,7 +312,7 @@ if($link === false){
 	  return false;
 	});
 	
-	function delfavor(){
+	function delfavor(){ /* 즐겨찾기 해제 버튼 클릭시 즐겨찾기 목록에서 해당 레시피를 삭제하는 함수 */
 		$.ajax({
 			url:"delfavor.php",
 			type:"GET",
@@ -349,15 +325,12 @@ if($link === false){
 </script>
 
 <div class="container">
-<div class = "low-button">
-
-   <div align="center">
-
-     <button type="button" onclick="location.href='fav_list.php'" class="btn btn-outline-primary btn-lg">목록으로</button>
-     <button class="btn btn-outline-primary btn-lg" type="button" onclick="location.href='modify.php?recipeID=<?=$id?>$item_id=<?=$_SESSION["ID"]?>'">수정</button>
- 
- </div>
- </div>
+	<div class = "low-button">
+		 <div align="center">
+		     <button type="button" onclick="location.href='fav_list.php'" class="btn btn-outline-primary btn-lg">목록으로</button>
+		     <button class="btn btn-outline-primary btn-lg" type="button" onclick="location.href='modify.php?recipeID=<?=$id?>$item_id=<?=$_SESSION["ID"]?>'">수정</button>
+		 </div>
+	</div>
 </div>
 
 </body>
