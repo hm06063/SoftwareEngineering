@@ -210,6 +210,9 @@
 				$sql2 = "INSERT INTO whalsrl5650.Timer(recipeID) VALUES(".$recipeID.");";
 				$result2 = mysqli_query($connect,$sql2);
 				
+				$sql_c="UPDATE whalsrl5650.Step SET step_count=".count($this->step)." where recipeID=".$recipeID.";";
+				$result_c=mysqli_query($connet, $sql_c);
+				
 				for($i = 1; $i <= count($this->step); $i++){
 					$string = $this->step[$i];
 					$time = $this->step_timer[$i];
