@@ -27,23 +27,20 @@
                                 <li><a href="../board/list.php">전체 레시피</a></li>
                                 <li><a href="#####">카테고리</a>
                                 <ul class="dropdown">
-                                     <li><a href="../board/Rice.php">밥</a></li>
-                                        <li><a href="../board/Maindish.php">메인반찬</a></li>
-                                         <li><a href="../board/Subdish.php">밑반찬</a></li>
-                                        <li><a href="../board/Soup.php">국</a></li>                                       
-                                        <li><a href="../board/Noodle.php">면요리</a></li>
-                                        <li><a href="../board/Fish.php">해물</a></li>
-                                         <li><a href="../board/Snack.php">분식</a></li>                                       
-                                        <li><a href="../board/Drink.php">술안주</a></li>
-                                        <li><a href="../board/Dessert.php">디저트</a></li>
-                                    </ul>
-                                </li>
-								
+                                	<li><a href="../board/Rice.php">밥</a></li>
+					<li><a href="../board/Maindish.php">메인반찬</a></li>
+					<li><a href="../board/Subdish.php">밑반찬</a></li>
+					<li><a href="../board/Soup.php">국</a></li>                                       
+					<li><a href="../board/Noodle.php">면요리</a></li>
+					<li><a href="../board/Fish.php">해물</a></li>
+					<li><a href="../board/Snack.php">분식</a></li>                                       
+					<li><a href="../board/Drink.php">술안주</a></li>
+					<li><a href="../board/Dessert.php">디저트</a></li>
+                                 </ul>
+				 </li>				
                                  <li><a href="../freeboard/review_list.php">자유게시판</a></li>
-                                   <li><a href="../join/join_form.php">회원가입</a></li>
+                                 <li><a href="../join/join_form.php">회원가입</a></li>
                                  <li><a href="../login/login_form.php">로그인</a></li>
-
-
                             </ul>
                         </nav>
                     </div>
@@ -79,26 +76,25 @@
                                 <li><a href="../board/list.php">전체 레시피</a></li>
                                 <li><a href="#####">카테고리</a>
                                 <ul class="dropdown">
-                                      <li><a href="../board/Rice.php">밥</a></li>
+                                	<li><a href="../board/Rice.php">밥</a></li>
                                         <li><a href="../board/Maindish.php">메인반찬</a></li>
-                                         <li><a href="../board/Subdish.php">밑반찬</a></li>
+                                        <li><a href="../board/Subdish.php">밑반찬</a></li>
                                         <li><a href="../board/Soup.php">국</a></li>                                       
                                         <li><a href="../board/Noodle.php">면요리</a></li>
                                         <li><a href="../board/Fish.php">해물</a></li>
-                                         <li><a href="../board/Snack.php">분식</a></li>                                       
+                                        <li><a href="../board/Snack.php">분식</a></li>                                       
                                         <li><a href="../board/Drink.php">술안주</a></li>
                                         <li><a href="../board/Dessert.php">디저트</a></li>
-                                    </ul>
+                                </ul>
                                 </li>
                                  <li><a href="../freeboard/review_list.php">자유게시판</a></li>
                                  <li><a href="####">마이페이지</a>
-								 <ul class="dropdown">
-										<li><a href="../board/fav_list.php">즐겨찾기</a></li>
-										<li><a href="../board/mylist.php">내가 쓴 레시피</a></li>
-										
-								 </ul></li>
-                              <li><a href="../login/logout.php">로그아웃</a></li>
-                               <a class="text-light"><?=$_SESSION["NICKNAME"]?> 님 환영합니다 </a>
+					 <ul class="dropdown">
+						<li><a href="../board/fav_list.php">즐겨찾기</a></li>
+						<li><a href="../board/mylist.php">내가 쓴 레시피</a></li>
+					 </ul></li>
+                             	 <li><a href="../login/logout.php">로그아웃</a></li>
+                             	  <a class="text-light"><?=$_SESSION["NICKNAME"]?> 님 환영합니다 </a>
 
                             </ul>
                         </nav>
