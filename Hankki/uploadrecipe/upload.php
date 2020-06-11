@@ -212,7 +212,7 @@
 				$result2 = mysqli_query($connect,$sql2);
 				
 				$sql_c="UPDATE whalsrl5650.Step SET step_count=".count($this->step)." where recipeID=".$recipeID.";";
-				$result_c=mysqli_query($connet, $sql_c);
+				$result_c=mysqli_query($connect, $sql_c);
 				
 				for($i = 1; $i <= count($this->step); $i++){
 					$string = $this->step[$i];
