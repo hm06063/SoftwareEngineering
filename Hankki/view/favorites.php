@@ -16,10 +16,17 @@
 	{
 		$sql1 = "insert into whalsrl5650.Favorites values($id,'$userID');";
 		$result1 = mysqli_query($link,$sql1);
+		
+		$content="success";
+		echo json_encode($content);
+		exit();
 
 	}
 	else
-	{
+	{		
+		$content="already added";
+		echo json_encode($content);
+		exit();
 	}
 
 ?>
