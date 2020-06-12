@@ -1,9 +1,10 @@
 <?php
 	session_start();
-$link = mysqli_connect("localhost", "whalsrl5650", "whalsrl5650!", "whalsrl5650");
-if($link === false){
-    die("ERROR: Could not connect. " . mysqli_connect_error());
-}
+	$link = mysqli_connect("localhost", "whalsrl5650", "whalsrl5650!", "whalsrl5650");
+	
+	if($link === false){
+	    die("ERROR: Could not connect. " . mysqli_connect_error());
+	}
 
 	$id = $_REQUEST["recipeID"];
 	$sql = "select * from whalsrl5650.Recipe where recipeID=$id";
@@ -11,7 +12,6 @@ if($link === false){
 	$result = mysqli_query($link, $sql);
 
 	$row=mysqli_fetch_assoc($result);
-	$count=$row['cookTime'];
 
 	$item_nick = $row['nickname'];
   	$item_id = $row['userID'];
@@ -39,23 +39,13 @@ if($link === false){
 	 $sql2="select * from whalsrl5650.Step where recipeID=$id";
 	 $result2=mysqli_query($link, $sql2);
 
-	 $row_step=mysqli_fetch_assoc($result2);
-	 $count=0;
-
-	$step1 = $row_step['step1'];
-	if(!empty($step1)){
-		$count++;
-	}
-
-	$step2 = $row_step['step2'];
-	if(!empty($step2)){
-		$count++;
-	}
-
-	$step3 = $row_step['step3'];
-	if(!empty($step3)){
-		$count++;
-	}
+	$row_step=mysqli_fetch_assoc($result2);
+	$count=$row_step['step_count'];
+	
+	$sql_time="select * from whalsrl5650.Timer where recipeID=$id";
+	$result_time=mysqli_query($link, $sql_time);
+	
+	$row_time=mysqli_fetch_assoc($result_time);
 	
 
 
@@ -151,14 +141,7 @@ if($link === false){
 				<?php echo "<img src='$item_image' class='coupon-img img-rounded'>";?>
 				<div class="col-md-9">
 					<ul class="items">
-						<li>가격 : 
-						<?php
-						if ($item_price==5000){ echo '만원 미만';}
-						else if ($item_price ==15000) {echo '만원~ 2만원';}
-						else if ($item_price == 25000) {echo '2만원 ~ 3만원';}
-						else if ($item_price == 50000) {echo '3만원 이상';}
-						?> 
-						</li>
+						<li>가격 : <?php echo $item_price; ?></li>
 						<li>재료 : <?php echo $item_ingredients ?></li>
 					</ul>
               		  	</div>
@@ -181,12 +164,16 @@ if($link === false){
 				if(isset($_SESSION["ID"])){ /* 로그인 한 경우만 별점 입력 */
 			?>
 
-			<div class="starRev" align ="right"> /* 별점 */
-			  <span class="starR on"></span>
-			  <span class="starR"></span>
-			  <span class="starR"></span>
-			  <span class="starR"></span>
-			  <span class="starR"></span>
+			<div align = "right">
+			<p id="star_grade">
+				 별점 입력하기 :
+				<a href="#">★</a>
+				<a href="#">★</a>
+				<a href="#">★</a>
+				<a href="#">★</a>
+				<a href="#">★</a>
+			</p>
+			</div>
 
 			</div>
 			<?php
@@ -218,9 +205,21 @@ for($start_count=1; $start_count<=$count; $start_count++){
              			<div class="panel-body">
                				<div class="col-md-9">
 					    <ul class="items">
-						<li><?php echo $$now_step ?></li>
+						<li><?php echo $row_step[$now_step];?></li>
 					    </ul>
                				</div>
+					<br><br><br>
+				
+					<?php if(empty($row_time[$now_step])==false){?>
+					<div align="center">
+					<span id=<?php echo $now_step?>>
+					<h1><b> <?php echo floor($row_time[$now_step]/60)?>분&nbsp<?php echo ($row_time[$now_step]%60)?>초</b></h1> 
+					</span>
+					<br>
+					<div class="wrap"><button class="button" onclick="timer(<?php echo $row_time[$now_step]?>, <?php echo "'".$now_step."'"?>)">시작</button></div>
+					<br><br>		
+					</div>
+					<?php } ?>
              			</div>
 
             		</div>
@@ -231,32 +230,11 @@ for($start_count=1; $start_count<=$count; $start_count++){
 
 </div>
 
-
-	<div align="center">
-		<strong><h2>Timer</h2></strong><br>
-		<span id="countdown"></span>
-		<br>
-		<div class="wrap"><button class="button" onclick="timer();">시작</button></div>
-		<br><br>
-	</div>
-
-<?php
-	$sql3 = "select cookTime from whalsrl5650.Recipe where recipeid=$id;";
-
-	$result3 = mysqli_query($link, $sql3);          
-
-	$row3=mysqli_fetch_assoc($result3);
-	$count=$row3['cookTime'];
-	echo "<script>var count = '".$count."';</script>";
-?>
-
 <script type="text/javascript">
     var time = 0;
-    var count_re=count;
-	var count_min=parseInt(count_re/60);
-	var count_sec=count_re%60;
-
-	document.getElementById("countdown").innerHTML="<h1><b>" +count_min+"분&nbsp"+count_sec+"초</b></h1>";
+	var count;
+	var count_re;
+	var pivot;
 
 	function play() {
 		var audio = document.getElementById('audio_play');
@@ -268,7 +246,12 @@ for($start_count=1; $start_count<=$count; $start_count++){
 		}
 	}
 
-    function timer() {
+    function timer(num,str){
+		pivot=str;
+		count=num;
+		count_re=count;
+		var count_min=parseInt(count_re/60);
+		var count_sec=count_re%60;
         clearInterval(time);
         time = setInterval("myTimer()", 1000);
 
@@ -279,7 +262,7 @@ for($start_count=1; $start_count<=$count; $start_count++){
 		count_min=parseInt(count_re/60);
 		count_sec=count_re%60;
 
-        document.getElementById("countdown").innerHTML = "<h1><b>" + count_min + "분&nbsp" + count_sec + "초</b></h1>";
+         document.getElementById(pivot).innerHTML = "<h1><b>" + count_min + "분&nbsp" + count_sec + "초</b></h1>";
         if (count_re == 0) {
             clearInterval(time); // 시간 초기화
             count_re=count;
@@ -289,37 +272,38 @@ for($start_count=1; $start_count<=$count; $start_count++){
         }
     }
 
-	function getIndex(ele){
-		var i=0;
-		while((ele=ele.previousSiblint)!=null){
-			i++;
-		}
-		return i;
-	}
-	
-	
-	$('.starRev span').click(function(){ /* 별 클릭시 값을 읽어와 별점을 입력하는 기능 */
-	  $(this).parent().children('span').removeClass('on');
-	  $(this).addClass('on').prevAll('span').addClass('on');
-	  var idx = $(this).index+1;
+	$('#star_grade a').click(function(){
+		$(this).parent().children("a").removeClass("on");  /* 별점의 on 클래스 전부 제거 */ 
+		$(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
+		var idx = $(this).index()+1;
 		
 		$.ajax({
-			url:"reviewed.php",
-			type:"GET",
-			data:{'idx':idx,'id':<?php echo $id?>},
-			dataType:"json",
-		});
-	  return false;
+            type: "GET", // POST형식으로 폼 전송
+            url: "../view/star_p.php", // 목적지
+            timeout: 10000,
+            data: ({'idx':idx, 'id':<?php echo $id?>}),
+            cache: false,
+            dataType: "json",
+			success:function(output, textstatus){
+				console.log(output);
+				alert(output);
+			},
+			error:function(request,status,error){
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+        }); 
+
 	});
-	
-	function delfavor(){ /* 즐겨찾기 해제 버튼 클릭시 즐겨찾기 목록에서 해당 레시피를 삭제하는 함수 */
+
+	function delfavor(){
 		$.ajax({
 			url:"delfavor.php",
 			type:"GET",
 			data:{'id':<?php echo $id?>},
 			dataType:"json",
 		});
-	  return false;
+		alert("완료되었습니다");
+		history.back();
 	}
 
 </script>
