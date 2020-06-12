@@ -1,8 +1,4 @@
 
-<HTML>
-<head>
-</head>
-<body>
 <?php
 	session_start();
 	
@@ -22,11 +18,14 @@
 	
 	$sql3 = "delete from whalsrl5650.Timer where recipeID = $id;";
 	$result3 = mysqli_query($link,$sql3);
+	
+	$sql4="delete from whalsrl5650.Favorites where recipeID=$id;";
+	$result4=mysqli_query($link, $sql4);
+	
+	$sql5="delete from whalsrl5650.Score where recipeID=$id;";
+	$result5=mysqli_query($link, $sql5);
+	
+	$content="success";
+	echo json_encode($content);
+	exit();
  ?>
-	<script>
-	alert('해당 레시피의 삭제가 완료되었습니다.');
-	history.back();
-	</script>
-
- </body>
- </HTML>
