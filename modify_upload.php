@@ -1,73 +1,85 @@
 <?php
+session_start();
 
-$connect = mysqli_connect("localhost", "whalsrl5650", "whalsrl5650!", "whalsrl5650") or die("connect fail");
+$link = mysqli_connect("localhost", "whalsrl5650", "whalsrl5650!", "whalsrl5650") or die("connect fail");
 
-$id=$_POST[recipeID];
+$id=$_REQUEST["recipeID"];
 $subject=$_REQUEST["TITLE"];
 $content=$_REQUEST["CONTENT"];
 $price=$_REQUEST["price"];
-$files = $_FILES["upfile"]; //첨부파일
 
 $type=$_REQUEST["type"];
 $ingredients=$_REQUEST["ingredients"];
 
-$upload_dir ='../data/';
+$file_sql = "SELECT * FROM whalsrl5650.Recipe WHERE recipeID=$id";
+$file_result = mysqli_query($link, $file_sql);
+$file_row = mysqli_fetch_array($file_result);
 
-$upfile_name = $files["name"];
-$upfile_tmp_name = $files["tmp_name"];
-$upfile_type = $files["type"];
-$upfile_size = $files["size"];
-$upfile_error = $files["error"];
-$file = explode(".", $upfile_name);
-$file_name = $file[0];
-$file_ext = $file[1];
+if($_FILES['uploadedfile']['name'] != "" )	{
 
-  if (!$upfile_error) {
-      $new_file_name = date("Y_m_d_H_i_s");
+  if(!empty($_POST['chk_delete']) || !empty($_POST['old_file']))
+  unlink($file_row[Image_copied]);
 
-      $copied_file_name = $new_file_name.".".$file_ext;
-      $uploaded_file = $upload_dir.$copied_file_name;
-			   if( $upfile_size > 5000000 ) {
-				   print("<script>alert('업로드 파일 크기가 지정된 용량(5MB)을 초과합니다!<br>파일 크기를 체크해주세요! ');history.back();</script>");
-				   exit;
-			   }
+  //////////////////////파일 업로드 처리////////////////////////////
+  $max_file_size  = 5000000;
+  $uploaddir = '../data/';
 
+  // 중복되지 않는 파일로 만듦
+  $filename = $uploaddir.substr(md5(uniqid($g4[server_time])),0,8)."_".$_FILES['uploadedfile']['name'];
 
-			   if ( ($upfile_type!= "image/gif") && ($upfile_type!= "image/jpeg")&&($upfile_type!= "image/png"))
-			   {
-				   print(" <script>alert('JPG/ GIF/PNG 형식의 이미지 파일만 업로드 가능합니다!'); history.back(); </script>");
-				   exit;
-			   }
+  //파일 확장자 확인
+  $chk_file = explode(".", $_FILES['uploadedfile']['name']);
+  $extension = $chk_file[sizeof($chk_file)-1];
 
-			   if (!move_uploaded_file($upfile_tmp_name, $uploaded_file) )
-				{
-					print("<script>alert('파일을 지정한 디렉토리에 복사하는데 실패했습니다.');history.back();</script>");
-					exit;
-				}
- }
+  if( ($extension!= "image/gif") && ($extension!= "image/jpeg")&&($extension!= "image/png")) {
+    $errmsg = $_FILES['uploadedfile']['name']." JPG/ GIF/PNG 형식의 이미지 파일만 업로드 가능합니다!";
+    exit;
+  }
 
+  //파일용량 확인
+  if($_FILES['uploadedfile']['size'] > $max_file_size) {
+    $errmsg = $_FILES['uploadedfile']['name']." 업로드 파일 크기가 지정된 용량(5MB)을 초과합니다!<br>파일 크기를 체크해주세요!";
+    exit;
+  }
 
-$query = "update whalsrl5650.Recipe set title='$subject', price='$price', content='$content' where recipeID = $id";
-$rlt = mysqli_query($link,$sql);
+  move_uploaded_file($_FILES['uploadedfile']['tmp_name'],$filename);
+  // chmod("$filename",0707); // 파일에 권한 설정
 
-$query2 = "update whalsrl5650.Recipe set type='$type', ingredients='$ingredients' where recipeID = $id";
-$rlt2 = mysqli_query($link,$sql2);
+  if (!move_uploaded_file($_FILES['uploadedfile']['tmp_name'],$filename) )
+{
+ print("<script>alert('파일을 지정한 디렉토리에 복사하는데 실패했습니다.');history.back();</script>");
+ exit;
+}
+}
+else {}
 
-$query3 = "update whalsrl5650.Recipe set Image='$upfile_name', Image_copied='$copied_file_name' where recipeID = $id";
-$rlt3 = mysqli_query($link,$sql3);
-
-if($rlt || $rlt2 || $rlt3) {
-?>
-  <script>
-    alert("<?php echo "레시피가 수정되었습니다."?>");
-    location.replace("./view_myrecipe.php?recipeID=<?=$id?>");
-
-  </script>
-<?php    }
+if(!empty($_POST['chk_delete'])) {
+  print("<script>alert('대표사진을 올려주세요!');history.back();</script>");
+  exit;
+}
 
 else {
-  echo "fail";
+
+$query = "UPDATE whalsrl5650.Recipe SET title='$subject', price='$price', content='$content' WHERE recipeID = $id";
+$rlt = mysqli_query($link,$query);
+
+$query2 = "UPDATE whalsrl5650.Recipe SET type='$type', ingredients='$ingredients' WHERE recipeID = $id";
+$rlt2 = mysqli_query($link,$query2);
+
+$query3 = "UPDATE whalsrl5650.Recipe SET Image_copied='$filename' WHERE recipeID = $id";
+$rlt3 = mysqli_query($link,$query3);
+
+?>
+
+<script>
+  alert("<?php echo "글이 수정되었습니다."?>");
+  location.replace("./view_myrecipe.php?recipeID=<?=$id?>");
+
+</script>
+
+ <?php
 }
+
 ?>
 
 

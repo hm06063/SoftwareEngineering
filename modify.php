@@ -26,25 +26,26 @@ $item_date = substr($item_date, 0, 10);
 $item_hit = $row['view_count'];
 $new_hit = $item_hit + 1;
 
-$item_image=$row['Image_copied'];
-$item_image="../data/".$item_image;
+if(strlen($row['Image_copied']) > 0) {
+		$path = "../data/".$row['Image_copied'];
+
+		$chk_name = explode(".", $row['Image_copied']);
+		$old_file = $chk_name[sizeof($chk_name)-1];
+}
+
 
 $item_ingredients=$row['ingredients'];
-
 $item_price=$row['price'];
 
-$sql1 = "update whalsrl5650.Recipe set view_count=$new_hit where recipeID=$id;"; // 글 조회수 증가
-$result1=mysqli_query($link, $sql1);
 
  $sql2="select * from whalsrl5650.Step where recipeID=$id";
  $result2=mysqli_query($link, $sql2);
-
  $row_step=mysqli_fetch_assoc($result2);
+
  $count=$row_step['step_count'];
 
 $sql_time="select * from whalsrl5650.Timer where recipeID=$id";
 $result_time=mysqli_query($link, $sql_time);
-
 $row_time=mysqli_fetch_assoc($result_time);
 
 
@@ -145,6 +146,7 @@ $URL = './mylist.php';
 			<body>
 
 				<form name="board_form" method="post" action="modify_upload.php" enctype="multipart/form-data">
+					<input type="hidden" name="old_file" value="<? echo $old_file ?>">
 					<div id = "jb-container">
 
 						<div id = 'jb-header'>
@@ -207,13 +209,30 @@ $URL = './mylist.php';
 						<br>
 
 						<div id = 'jb-footer' style = "width:80;">
-							<div>
-								대표사진
-							</div>
-							<div class="col2">
-								<input type="file" name="upfile" value="<?=$item_image?>" required>
-							</div>
+              <?
+                //////////////기존 첨부파일 표시 및 파일 첨부하기////////////////////////////
+                echo "<table width=\"80%\">\n";
+
+                if(strlen($old_file) > 0)
+                {
+                  //체크된 값만 chk_delete 배열에 순서대로 저장된다.
+                  //chk_delete에 값이 들어있다면 체크가 된 것이다.
+                  echo "<tr><td width=\"120\" align=\"left\">대표사진<Br>
+                        <input type=\"file\" name=\"uploadedfile\" size=\"30\">&nbsp;
+                        <img src=\"paperclip-16x16.png\"><a href=\"$path\">$old_file</a>
+                        <input type=\"checkbox\" name=\"chk_delete\" value=\"$row[Image_copied]\">삭제 </td></tr>\n";
+                }
+                else
+                {
+                  echo "<tr><td width=\"120\" align=\"center\">대표사진<Br>
+                        <input type=\"file\" name=\"uploadedfile\" size=\"30\"></td></tr>\n";
+                  }
+
+                echo "</table>\n";
+                //////////////파일 첨부하기////////////////////////////
+              ?>
 						</div></br>
+
 						<br>
 						<div align="right">
               <input type="hidden" name="recipeID" value="<?=$id?>">
