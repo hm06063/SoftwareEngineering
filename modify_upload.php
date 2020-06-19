@@ -15,72 +15,100 @@ $file_sql = "SELECT * FROM whalsrl5650.Recipe WHERE recipeID=$id";
 $file_result = mysqli_query($link, $file_sql);
 $file_row = mysqli_fetch_array($file_result);
 
-if($_FILES['uploadedfile']['name'] != "" )	{
 
-  if(!empty($_POST['chk_delete']) || !empty($_POST['old_file']))
-  unlink($file_row[Image_copied]);
+if($_FILES['upfile']['name'] != "" )	{  // 새로운 첨부파일 있을 때
+
+  if(!empty($_POST['chk_delete']) && !empty($_POST['old_file']))  // 삭제 체크 된 경우
+  unlink($file_row[Image_copied]);  // 첨부파일 삭제
 
   //////////////////////파일 업로드 처리////////////////////////////
   $max_file_size  = 5000000;
   $uploaddir = '../data/';
 
   // 중복되지 않는 파일로 만듦
-  $filename = $uploaddir.substr(md5(uniqid($g4[server_time])),0,8)."_".$_FILES['uploadedfile']['name'];
+  $filename = $uploaddir.date("Y_m_d_H_i_s")."_".$_FILES['upfile']['name'];
 
   //파일 확장자 확인
-  $chk_file = explode(".", $_FILES['uploadedfile']['name']);
+  $chk_file = explode(".", $_FILES['upfile']['name']);
   $extension = $chk_file[sizeof($chk_file)-1];
 
   if( ($extension!= "image/gif") && ($extension!= "image/jpeg")&&($extension!= "image/png")) {
-    $errmsg = $_FILES['uploadedfile']['name']." JPG/ GIF/PNG 형식의 이미지 파일만 업로드 가능합니다!";
+    $errmsg = $_FILES['upfile']['name']." JPG/ GIF/PNG 형식의 이미지 파일만 업로드 가능합니다!";
     exit;
   }
 
   //파일용량 확인
-  if($_FILES['uploadedfile']['size'] > $max_file_size) {
-    $errmsg = $_FILES['uploadedfile']['name']." 업로드 파일 크기가 지정된 용량(5MB)을 초과합니다!<br>파일 크기를 체크해주세요!";
+  if($_FILES['upfile']['size'] > $max_file_size) {
+    $errmsg = $_FILES['upfile']['name']." 업로드 파일 크기가 지정된 용량(5MB)을 초과합니다!<br>파일 크기를 체크해주세요!";
     exit;
   }
 
-  move_uploaded_file($_FILES['uploadedfile']['tmp_name'],$filename);
+  move_uploaded_file($_FILES['upfile']['tmp_name'],$filename);
   // chmod("$filename",0707); // 파일에 권한 설정
 
-  if (!move_uploaded_file($_FILES['uploadedfile']['tmp_name'],$filename) )
+  if (!move_uploaded_file($_FILES['upfile']['tmp_name'],$filename) )
 {
  print("<script>alert('파일을 지정한 디렉토리에 복사하는데 실패했습니다.');history.back();</script>");
  exit;
 }
-}
-else {}
 
-if(!empty($_POST['chk_delete'])) {
-  print("<script>alert('대표사진을 올려주세요!');history.back();</script>");
-  exit;
-}
+	if($errmsg == "") {
+    $query = "UPDATE whalsrl5650.Recipe SET title='$subject', price='$price', content='$content' WHERE recipeID = $id";
+    $rlt = mysqli_query($link,$query) or die("rlt fail");
 
-else {
+    $query2 = "UPDATE whalsrl5650.Recipe SET type='$type', ingredients='$ingredients' WHERE recipeID = $id";
+    $rlt2 = mysqli_query($link,$query2) or die("rlt2 fail");
 
-$query = "UPDATE whalsrl5650.Recipe SET title='$subject', price='$price', content='$content' WHERE recipeID = $id";
-$rlt = mysqli_query($link,$query);
+    $query3 = "UPDATE whalsrl5650.Recipe SET Image_copied='$filename' WHERE recipeID = $id";
+    $rlt3 = mysqli_query($link,$query3) or die("rlt3 fail");
 
-$query2 = "UPDATE whalsrl5650.Recipe SET type='$type', ingredients='$ingredients' WHERE recipeID = $id";
-$rlt2 = mysqli_query($link,$query2);
+    echo "<script language=\"JavaScript\">
+  	        alert(\"글을 수정했습니다.\");
+              document.location.replace(\"view_myrecipe.php?recipeID=".$id."\");
+            /script>";
+          }
+    else {
+      echo "<script language=\"JavaScript\">
+         	        alert(\"$errmsg\");
+                  document.location.replace(\"view_myrecipe.php?recipeID=".$id."\");
+                  </script>";
+         		}
+  }
 
-$query3 = "UPDATE whalsrl5650.Recipe SET Image_copied='$filename' WHERE recipeID = $id";
-$rlt3 = mysqli_query($link,$query3);
+
+  elseif(empty($_POST['chk_delete'])) { // 기존 첨부파일 그대로 올릴 경우
+      $query = "UPDATE whalsrl5650.Recipe SET title='$subject', price='$price', content='$content' WHERE recipeID = $id";
+      $rlt = mysqli_query($link,$query) or die("rlt fail");
+
+      $query2 = "UPDATE whalsrl5650.Recipe SET type='$type', ingredients='$ingredients' WHERE recipeID = $id";
+      $rlt2 = mysqli_query($link,$query2) or die("rlt2 fail");
+
+      echo "<script language=\"JavaScript\">
+            alert(\"글을 수정했습니다.\");
+              document.location.replace(\"view_myrecipe.php?recipeID=".$id."\");
+            /script>";
+  }
+
+
+
+  elseif(!empty($_POST['chk_delete'])) { // 새로운 첨부파일없이 삭제만 할 경우
+    echo "<script language=\"JavaScript\">
+                alert(\"대표사진을 등록해주세요.\");
+                document.location.replace(\"view_myrecipe.php?recipeID=".$id."\");
+                </script>";
+          }
+
+  else {
+    echo "<script language=\"JavaScript\">
+                alert(\"fail.\");
+                document.location.replace(\"view_myrecipe.php?recipeID=".$id."\");
+                </script>";
+  }
+
 
 ?>
 
-<script>
-  alert("<?php echo "글이 수정되었습니다."?>");
-  location.replace("./view_myrecipe.php?recipeID=<?=$id?>");
 
-</script>
-
- <?php
-}
-
-?>
 
 
 <HTML>
