@@ -79,7 +79,7 @@ $stmh = $pdo->prepare($sql);
  $stmh->bindValue(9, $ingredients, PDO::PARAM_STR);
  $stmh->execute();
  $pdo->commit();
- header("Location:http://whalsrl5650.cafe24.com/list/All_list.php");
+ header("Location:http://whalsrl5650.cafe24.com/list/All_list_view.php");
  } catch (PDOException $Exception) {
  $pdo->rollBack();
  print "오류: ".$Exception->getMessage();
