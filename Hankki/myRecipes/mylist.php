@@ -69,9 +69,9 @@
 						$item_hit=$data['view_count'];
 						$item_review=$data['reviewNum'];
 						?>
-						
-						<td><a href="view_myrecipe.php?recipeID=<?=$item_num?>"><?php echo "<img src='$item_image' width='250' height='250' class='img-responsive'>";?></a></td>
-						<td><a href="view_myrecipe.php?recipeID=<?=$item_num?>"><?= $item_subject?></a></td>
+								  
+						<td><a href="view_myrecipe_data.php?recipeID=<?=$item_num?>"><?php echo "<img src='$item_image' width='250' height='250' class='img-responsive'>";?></a></td>
+						<td><a href="view_myrecipe_data.php?recipeID=<?=$item_num?>"><?= $item_subject?></a></td>
 						<td><?= $item_id?></td>
 						<td><?= $item_score?></td>
 						<td><?= $item_date?></td>
