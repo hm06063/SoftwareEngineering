@@ -1,56 +1,3 @@
-<?php
-	session_start();
-	$link = mysqli_connect("localhost", "whalsrl5650", "whalsrl5650!", "whalsrl5650");
-	
-	if($link === false){
-	    die("ERROR: Could not connect. " . mysqli_connect_error());
-	}
-
-	$id = $_REQUEST["recipeID"];
-	$sql = "select * from whalsrl5650.Recipe where recipeID=$id";
-
-	$result = mysqli_query($link, $sql);
-
-	$row=mysqli_fetch_assoc($result);
-
-	$item_nick = $row['nickname'];
-  	$item_id = $row['userID'];
-
-	$item_title = str_replace(" ", "&nbsp;", $row['title']);
-
-	$item_content = $row['content'];
-
-	$item_date = $row['uploadDate'];
-	$item_date = substr($item_date, 0, 10);
-
-	$item_hit = $row['view_count'];
-	$new_hit = $item_hit + 1;
-
-	$item_image=$row['Image_copied'];
-	$item_image="../data/".$item_image;
-
-	$item_ingredients=$row['ingredients'];
-
-	$item_price=$row['price'];
-
-	$sql1 = "update whalsrl5650.Recipe set view_count=$new_hit where recipeID=$id;"; // 글 조회수 증가
-	$result1=mysqli_query($link, $sql1);
-
-	 $sql2="select * from whalsrl5650.Step where recipeID=$id";
-	 $result2=mysqli_query($link, $sql2);
-
-	$row_step=mysqli_fetch_assoc($result2);
-	$count=$row_step['step_count'];
-	
-	$sql_time="select * from whalsrl5650.Timer where recipeID=$id";
-	$result_time=mysqli_query($link, $sql_time);
-	
-	$row_time=mysqli_fetch_assoc($result_time);
-	
-
-
-?>
-
 
 <!DOCTYPE html>
 <html>
@@ -68,34 +15,7 @@
 
     <audio id='audio_play' src='./sound.mp3'></audio>
 	
-	<style>
-		.starR{
-		  background: url('http://miuu227.godohosting.com/images/icon/ico_review.png') no-repeat right 0;
-		  background-size: auto 100%;
-		  width: 30px;
-		  height: 30px;
-		  display: inline-block;
-		  text-indent: -9999px;
-		  cursor: pointer;
-		}
-		.starR.on{background-position:0 0;}
-		
-		.btn {
-			background-color: #333;
-			border: 2px solid #333;
-			color: #fff;
-			line-height: 30px;
-		}
-		.btn:hover {
-			
-			background-color: #fff;
-			border-color: #333;
-			color: #333;
-		
-		}
-		
-		
-	</style>
+    <link rel="stylesheet" type="text/css" href="./fav_view_style.css">
 </head>
 
 <body>
@@ -230,83 +150,7 @@ for($start_count=1; $start_count<=$count; $start_count++){
 
 </div>
 
-<script type="text/javascript">
-    var time = 0;
-	var count;
-	var count_re;
-	var pivot;
-
-	function play() {
-		var audio = document.getElementById('audio_play');
-		if (audio.paused) {
-			audio.play();
-		}else{
-			audio.pause();
-			audio.currentTime = 0
-		}
-	}
-
-    function timer(num,str){
-		pivot=str;
-		count=num;
-		count_re=count;
-		var count_min=parseInt(count_re/60);
-		var count_sec=count_re%60;
-        clearInterval(time);
-        time = setInterval("myTimer()", 1000);
-
-    }
-
-    function myTimer() {
-        count_re= count_re - 1;
-		count_min=parseInt(count_re/60);
-		count_sec=count_re%60;
-
-         document.getElementById(pivot).innerHTML = "<h1><b>" + count_min + "분&nbsp" + count_sec + "초</b></h1>";
-        if (count_re == 0) {
-            clearInterval(time); // 시간 초기화
-            count_re=count;
-			count_min=parseInt(count_re/60);
-			count_sec=count_re%60;
-			play();
-        }
-    }
-
-	$('#star_grade a').click(function(){
-		$(this).parent().children("a").removeClass("on");  /* 별점의 on 클래스 전부 제거 */ 
-		$(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
-		var idx = $(this).index()+1;
-		
-		$.ajax({
-            type: "GET", // POST형식으로 폼 전송
-            url: "../view/star_p.php", // 목적지
-            timeout: 10000,
-            data: ({'idx':idx, 'id':<?php echo $id?>}),
-            cache: false,
-            dataType: "json",
-			success:function(output, textstatus){
-				console.log(output);
-				alert(output);
-			},
-			error:function(request,status,error){
-				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-			}
-        }); 
-
-	});
-
-	function delfavor(){
-		$.ajax({
-			url:"delfavor.php",
-			type:"GET",
-			data:{'id':<?php echo $id?>},
-			dataType:"json",
-		});
-		alert("완료되었습니다");
-		history.back();
-	}
-
-</script>
+<?php include './fav_view_java.js'?>
 
 <div class="container">
 	<div class = "low-button">
