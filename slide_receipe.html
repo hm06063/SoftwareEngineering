@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>Slide Project</title>
+		<style>
+			html, body {
+				box-sizing: border-box;
+				padding: 0;
+				margin: 0;
+				text-align: center;
+			}
+			*, *:before, *:after {
+				box-sizing: inherit;
+			}
+			.clearfix:after {
+				content: '';
+				display: block;
+				clear: both;
+				float: none;
+			}
+			.title {
+				margin-bottom: 0;
+				text-align: center;
+				font-size: 30px;
+				color: #333;
+			}
+			.link, .link:visited {
+				display: inline-block;
+				margin: 20px 0;
+				color: #555;
+				text-decoration: none;
+				font-weight: bold;
+			}
+			.link:hover, .link:focus {
+				color: #9fd6c2;
+			}
+			/* container - body */
+			#container {
+				width: 1000px;
+				margin: auto;
+			}
+			.slide_wrap {
+				position: relative;
+				width: 400px;
+				margin: auto;
+				padding-bottom: 30px;
+			}
+			.slide_box {
+				width: 100%;
+				margin: auto;
+				overflow-x: hidden;
+			}
+			.slide_content {
+				display: table;
+				float: left;
+				width: 400px;
+				height: 400px;
+			}
+			.slide_content > p {
+				display: table-cell;
+				vertical-align: middle;
+				text-align: center;
+				font-size: 25px;
+				font-weight: bold;
+				color: #555;
+			}
+			.slide_btn_box > button {
+				position: absolute;
+				top: 50%;
+				margin-top: -45px;
+				width: 60px;
+				height: 60px;
+				font-size: 16px;
+				color: #999;
+				background: none;
+				border: 1px solid #ddd;
+				cursor: pointer;
+			}
+			.slide_btn_box > .slide_btn_prev {
+				left: -100px;
+			}
+			.slide_btn_box > .slide_btn_next {
+				right: -100px;
+			}
+			.slide_pagination {
+				position: absolute;
+				left: 50%;
+				bottom: 0;
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				transform: translateX(-50%);
+			}
+			.slide_pagination .dot {
+				display: inline-block;
+				width: 15px;
+				height: 15px;
+				margin: 0 5px;
+				overflow: hidden;
+				background: #ddd;
+				border-radius: 50%;
+				transition: 0.3s;
+			}
+			.slide_pagination .dot.dot_active {
+				background: #333;
+			}
+			.slide_pagination .dot a {
+				display: block;
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+
+	</head>
+	<body>
+
+		<div id="container">
+			<h1 class="title">레시피</h1>
+			<div class="slide_wrap">
+				<div class="slide_box">
+					<div class="slide_list clearfix">
+						<!--
+						각 레시피 단계 들어갈 자리
+						-->
+						<?php
+							for($i = 0 ; $i < $count; $i++){
+							$word = "step";
+							$now_step = $word.($i+1);
+							echo "<div class='slide_content'><p>".$array_data[$i];
+							echo "<br><br><time id='".$now_step."'>".floor(($array_time[$i]/(100))/(60))."분 ".($array_time[$i]/(100))%(60)."초</time></p></div>";
+							}
+						?>
+					</div>
+
+				</div>
+				<button type="button" class="start">
+					시작하기
+				</button>
+				<button type="button" class="pause">
+					일시정지
+				</button>
+				<button type="button" class="first">
+					처음으로
+				</button>
+
+				<ul class="slide_pagination"></ul>
+
+			</div>
+
+		</div>
+
+	<script>
+		const box = document.querySelector('.slide_list');
+		var step = <?php echo $count; ?>;	
+		var j = 0;
+		var div_tag;
+		var p_tag
+		var time_slot = <?php echo json_encode($array_time);?>;
+		//각 레시피 단계에 저장된 타이머 값			
+
+		(function () {
+		const slideList = document.querySelector('.slide_list');
+		const slideContents = document.querySelectorAll('.slide_content');
+		const start_btn = document.querySelector('.start');
+		const pause_btn = document.querySelector('.pause');
+		const first_btn = document.querySelector('.first');
+		const pagination = document.querySelector('.slide_pagination');
+		const slideLen = slideContents.length;
+		const slideWidth = 400;
+		const slideSpeed = 300;
+		const startNum = 0;
+
+		slideList.style.width = slideWidth * (slideLen + 2) + "px";
+
+	
+
+		let pageChild = '';
+		for (var i = 0; i < slideLen; i++) {
+			pageChild += '<li class="dot';
+			pageChild += (i === startNum) ? ' dot_active' : '';
+			pageChild += '" data-index="' + i + '"><a href="#"></a></li>';
+		}
+		pagination.innerHTML = pageChild;
+		const pageDots = document.querySelectorAll('.dot');
+
+		slideList.style.transform = "translate3d(-" + (slideWidth * (startNum)) + "px, 0px, 0px)";
+
+		let curIndex = startNum; 
+		let curSlide = slideContents[curIndex]; // current slide dom
+		curSlide.classList.add('slide_active');
+		//////////////////////////////////////////////////////////
+		var time = 0;
+		var count = 30;
+		var count_re = 0;
+		var pivot;
+	
+		function timer(num,str){
+			pivot=str;
+			if(count_re == 0){
+				count=num/100;
+				count_re=count;
+			}
+			var count_min=parseInt(count_re/60);
+			var count_sec=count_re%60;
+			clearInterval(time);
+			time = setInterval(myTimer, 1000);
+		}
+
+		function myTimer() {
+			count_re= count_re - 1;
+			count_min=parseInt(count_re/60);
+			count_sec=count_re%60;
+			document.getElementById(pivot).innerHTML = count_min + "분&nbsp" + count_sec + "초";
+			if (count_re == 0) {
+				clearInterval(time); // 시간 초기화
+				count_re=count;
+				count_min=parseInt(count_re/60);
+				count_sec=count_re%60;
+		
+				if(i < step - 1){
+					count_re = 0;
+					changeSlide();
+					timer(time_slot[i], "step"+(i + 1));
+				}	
+			}
+		}
+
+	//////////////////////////////////////////////////////////
+
+
+	var i = 0;
+	var timer_obj;
+	function backtoFirst(){
+	slideList.style.transition = slideSpeed + "ms";
+	slideList.style.transform = "translate3d(-" + (slideWidth * (curIndex + 2)) + "px, 0px, 0px)";
+	pageDots[(curIndex === -1) ? slideLen - 1 : curIndex].classList.remove('dot_active');
+	curSlide.classList.remove('slide_active');
+	curIndex = 0;
+	curSlide = slideContents[curIndex];
+	curSlide.classList.add('slide_active');
+	pageDots[curIndex].classList.add('dot_active');
+
+	}
+	
+	function changeSlide(){
+		
+		if (curIndex <= slideLen - 1) {
+		slideList.style.transition = slideSpeed + "ms";
+		slideList.style.transform = "translate3d(-" + (slideWidth * (curIndex + 1)) + "px, 0px, 0px)";
+		}
+
+		curSlide.classList.remove('slide_active');
+		pageDots[(curIndex === -1) ? slideLen - 1 : curIndex].classList.remove('dot_active');
+		curSlide = slideContents[++curIndex];
+		curSlide.classList.add('slide_active');
+		pageDots[curIndex].classList.add('dot_active');
+		console.log(time_slot[i]);
+		i++;
+		if(i>step - 1){
+		i = 0;
+		clearInterval(time);
+		}
+
+	}
+
+	start_btn.addEventListener('click', function() {
+		timer(time_slot[i], "step"+(i+1));
+		});
+
+	pause_btn.addEventListener('click', function(){
+		clearInterval(time);
+		});
+		
+	first_btn.addEventListener('click', function(){
+		/*
+		clearInterval(timer_obj);
+		i = 0;
+		backtoFirst();
+		timer_obj = setInterval(changeSlide, time_slot[i]);
+		*/
+		alert("not yet");
+
+		});
+
+			/** Pagination Button Event */
+			let curDot;
+			Array.prototype.forEach.call(pageDots, function(dot, i) {
+				dot.addEventListener('click', function(e) {
+					e.preventDefault();
+					curDot = document.querySelector('.dot_active');
+					curDot.classList.remove('dot_active');
+					
+					curDot = this;
+					this.classList.add('dot_active');
+					console.log(this.getAttribute('data-index'));
+					clearInterval(time);
+					curSlide.classList.remove('slide_active');
+					curIndex = Number(this.getAttribute('data-index'));
+					curSlide = slideContents[curIndex];
+					curSlide.classList.add('slide_active');
+					slideList.style.transition = slideSpeed + "ms";
+					slideList.style.transform = "translate3d(-" + (slideWidth * (curIndex)) + "px, 0px, 0px)";
+				});
+			});
+			})();
+		</script>
+	</body>
+</html>
