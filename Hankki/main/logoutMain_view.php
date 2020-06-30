@@ -100,9 +100,11 @@
                                 </div>
                                 <div class="select__option">
                                     <select name="cost">
-                                        <option value="">가격대 전체</option>
-										<option value="5000">5000원 이하</option>
-										<option value="10000">10000원 이하</option>
+                                         <option value="">가격대 전체</option>
+										<option value="5000">만원미만</option>
+										<option value="15000">만원~2만원</option>	
+										<option value="25000">2만원~3만원</option>
+										<option value="50000">3만원이상</option>
                                     </select>
                                 </div>
                             
