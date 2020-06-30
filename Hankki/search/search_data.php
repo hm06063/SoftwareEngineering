@@ -22,11 +22,11 @@
 		$cate_sql="type LIKE '%$cate%'";
 	}
 	
-	if(empty($cost) || $cost=="*"){
+	if(empty($cost)){
 		$cost_sql="price>=0";
 	}
 	else{
-		$cost_sql="price<=$cost";
+		$cost_sql="price=$cost";
 	}
 	
 	$sql="select * from whalsrl5650.Recipe where ".$name_sql." and ".$cate_sql." and ".$cost_sql.";";
