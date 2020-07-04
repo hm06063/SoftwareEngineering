@@ -1,8 +1,8 @@
 
 
 <script type="text/javascript">
-    var time = 0;
-   var count;
+    	var time = 0;
+  	var count;
 	var count_re;
 	var pivot;
 
@@ -17,34 +17,35 @@
 		}
 	}
 
-   function timer(num,str){
+      function timer(num,str){
 		pivot=str;
 		count=num;
 		count_re=count;
 		var count_min=parseInt(count_re/60);
 		var count_sec=count_re%60;
-        clearInterval(time);
-        time = setInterval("myTimer()", 1000);
+     		
+		clearInterval(time);
+       		time = setInterval("myTimer()", 1000);
 
-    }
-
-    function myTimer() {
-        count_re= count_re - 1;
+      }
+  
+      function myTimer() {
+        	count_re= count_re - 1;
 		count_min=parseInt(count_re/60);
 		count_sec=count_re%60;
 
-        document.getElementById(pivot).innerHTML = "<h1><b>" + count_min + "분&nbsp" + count_sec + "초</b></h1>";
-        if (count_re == 0) {
-            clearInterval(time); // 시간 초기화
-            count_re=count;
+        	document.getElementById(pivot).innerHTML = "<h1><b>" + count_min + "분&nbsp" + count_sec + "초</b></h1>";
+       		if (count_re == 0) {
+            		clearInterval(time); // 시간 초기화
+            		count_re=count;
 			count_min=parseInt(count_re/60);
 			count_sec=count_re%60;
 			play();
-        }
+      		}
     }
 
 
-	function del_myrecp(){
+   function del_myrecp(){
 		$.ajax({
 			url:"del_myrecp.php",
 			type:"GET",
@@ -59,6 +60,6 @@
 			}
 		});
 		history.back();
-	}
+    }
 
 </script>
