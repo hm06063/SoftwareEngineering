@@ -90,12 +90,12 @@ session_start();
 
 			<body>
 
-				<form name="board_form" method="post" action="upload.php" enctype="multipart/form-data">
+				<form name="board_form" method="post" action="receipewriteProcess.php" enctype="multipart/form-data">
 					<div id = "jb-container">
 
 						<div id = 'jb-header'>
 							<div >
-								&nbsp; 닉네임:<?=$_SESSION["NICKNAME"] ?>
+								&nbsp; 닉네임:&nbsp;<?=$_SESSION["NICKNAME"] ?>
 							</div>
 							<div >&nbsp; 제목 </div>
 							&nbsp; <input type="text" name="TITLE" id="title">
@@ -166,7 +166,7 @@ session_start();
 							<button type = "submit" class = "btn btn-outline-success btn-lg" onclick="return CheckValidation()">
 								레시피 올리기
 							</button>
-							<button type="button" onclick="location.href='list.php'" class="btn btn-outline-primary btn-lg">
+							<button type="button" onclick="location.href='../list/All_list_view.php'" class="btn btn-outline-primary btn-lg">
 								목록
 							</button>
 						</div>
